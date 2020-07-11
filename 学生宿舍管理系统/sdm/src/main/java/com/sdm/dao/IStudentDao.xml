@@ -1,0 +1,69 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.sdm.dao.IStudentDao">
+
+    <!--查询全部的学生信息-->
+    <select id="selectAllStudent" resultMap="StudentMap">
+        select * from student
+    </select>
+    <resultMap id="StudentMap" type="Student">
+        <id column="st_id" property="sid"/>
+        <result column="st_sno" property="sno"/>
+        <result column="st_name" property="name"/>
+        <result column="st_password" property="password"/>
+        <result column="st_sex" property="sex"/>
+        <result column="st_col" property="college"/>
+        <result column="st_class" property="classes"/>
+        <result column="st_phone" property="phone"/>
+        <result column="house_num" property="house"/>
+    </resultMap>
+    <delete id="deleteStudentById">
+        delete from student where st_sno = #{sno}
+    </delete>
+
+    <!--插入学生信息-->
+    <insert id="insertStudent" parameterType="Student">
+        insert into student(st_sno,st_name,st_password,st_sex,st_col,st_class,st_phone,house_num) values(#{sno},#{name},#{password},#{sex},#{college},#{classes},#{phone},#{house})
+    </insert>
+
+    <!--通过学号sno更新学生信息-->
+    <update id="updateStudentBySno" parameterType="Student">
+        update student set st_name=#{name},st_password=#{password},st_sex=#{sex},st_col=#{college},st_class=#{classes},st_phone=#{phone},house_num=#{house} where st_sno = #{sno}
+    </update>
+
+    <!--查询全部学号放入list集合里-->
+    <select id="findAllSno" resultType="java.lang.String">
+        select st_sno from student
+    </select>
+
+    <!--通过学号sno查询学生的信息-->
+    <!-- 学生查询用户和密码进行登录 -->
+    <select id="findStudentBySno" resultMap="StudentMapBySno">
+        select * from student where st_sno = #{sno}
+    </select>
+    <resultMap id="StudentMapBySno" type="Student">
+        <id column="st_id" property="sid"/>
+        <result column="st_sno" property="sno"/>
+        <result column="st_name" property="name"/>
+        <result column="st_password" property="password"/>
+        <result column="st_sex" property="sex"/>
+        <result column="st_col" property="college"/>
+        <result column="st_class" property="classes"/>
+        <result column="st_phone" property="phone"/>
+        <result column="house_num" property="house"/>
+    </resultMap>
+
+    <!--通过学号查找房子-->
+    <select id="findRhouseBySno" resultType="java.lang.String">
+        select house_num from student where st_sno = #{sno}
+    </select>
+
+
+    <!--通过学查找名字-->
+    <select id="findNameBySno" resultType="java.lang.String">
+        select st_name from student where st_sno = #{sno}
+    </select>
+
+</mapper>

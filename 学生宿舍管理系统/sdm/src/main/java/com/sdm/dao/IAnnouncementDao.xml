@@ -1,0 +1,39 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.sdm.dao.IAnnouncementDao">
+
+    <select id="selectAnnouncement" resultType="Announcement">
+        select * from announcement
+    </select>
+
+    <delete id="deleteAnnoById">
+        delete from announcement where anno_id = #{anno_id}
+    </delete>
+
+    <insert id="addAnnos" parameterType="Announcement">
+        insert into announcement (anno_name,anno_content,anno_data) values (#{anno_name},#{anno_content},#{anno_data})
+    </insert>
+
+    <!--通过学号id更新学生信息-->
+    <update id="updateAnnoById" parameterType="Announcement">
+        update announcement set anno_name=#{anno_name},anno_content=#{anno_content},anno_data=#{anno_data} where anno_id=#{anno_id}
+    </update>
+
+    <!--查询全部学号放入list集合里-->
+    <select id="findAllId" resultType="java.lang.String">
+        select anno_id from announcement
+    </select>
+
+    <!--通过学号sno查询学生的信息-->
+    <select id="findAnnoById" resultMap="AnnoMapById">
+        select * from announcement where anno_id = #{anno_id}
+    </select>
+    <resultMap id="AnnoMapById" type="Announcement">
+        <id column="anno_id" property="anno_id"/>
+        <result column="anno_name" property="anno_name"/>
+        <result column="anno_content" property="anno_content"/>
+        <result column="anno_data" property="anno_data"/>
+    </resultMap>
+</mapper>

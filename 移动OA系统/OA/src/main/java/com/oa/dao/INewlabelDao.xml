@@ -1,0 +1,151 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.oa.dao.INewlabelDao">
+
+    <!--查询总条数-->
+    <select id="selectAllCount" resultType="int">
+        select count(*) from newlabel
+    </select>
+
+    <!--查询按栏目查询的栏目子栏目的条数-->
+    <select id="selectPartAll" resultType="int">
+        select count(*) from newlabel where pid=#{id}
+    </select>
+
+    <!--findAll按分页查询-->
+    <select id="selectCurrentPageNewslabels" resultMap="newLabelMap">
+        select * from newlabel limit #{pageStartIndex},#{pageSize}
+    </select>
+    <resultMap id="newLabelMap" type="Newlabel">
+        <id column="id" property="id"/>
+        <result column="label_name" property="label_name"/>
+        <result column="label_content" property="label_content"/>
+        <result column="pid" property="pid"/>
+        <association property="parent"
+                     javaType="Newlabel"
+                     select="selectNewsLabelByChild"
+                     column="pid"/>
+    </resultMap>
+    <select id="selectNewsLabelByChild" resultMap="newLabelMap">
+        select * from newlabel where id = #{pid}
+    </select>
+
+
+    <!--findAll01按分页查询-->
+    <select id="selectCurrentPageNewslabels1" resultMap="newLabelMap1">
+        select * from newlabel
+        <where>
+            <if test="pid != 0">
+                pid = #{pid}
+            </if>
+        </where>
+        limit #{page.pageStartIndex},#{page.pageSize}
+    </select>
+    <resultMap id="newLabelMap1" type="Newlabel">
+        <id column="id" property="id"/>
+        <result column="label_name" property="label_name"/>
+        <result column="label_content" property="label_content"/>
+        <result column="pid" property="pid"/>
+        <collection property="children"
+                    ofType="Newlabel"
+                    select="selectLabelByParent1"
+                    column="id" />
+    </resultMap>
+    <select id="selectLabelByParent1" resultMap="newLabelMap1">
+        select * from newlabel where pid = #{id}
+    </select>
+
+
+
+    <!--按id查询-->
+    <select id="selectById" resultType="newlabel">
+        select * from newlabel where id = #{id}
+    </select>
+
+    <!--通过栏目名查询及其子栏目信息-->
+    <select id="selectlabelChildren" resultMap="selectlabelChildren2">
+        select * from newlabel where id = #{id}
+    </select>
+    <resultMap id="selectlabelChildren2" type="Newlabel">
+        <id column="id" property="id"/>
+        <result column="label_name" property="label_name"/>
+        <result column="label_content" property="label_content"/>
+        <result column="pid" property="pid"/>
+        <collection property="children"
+                    ofType="Newlabel"
+                    select="selectLabelByChildren"
+                    column="id" >
+        </collection>
+    </resultMap>
+    <select id="selectLabelByChildren" resultMap="selectlabelChildren2">
+        select * from newlabel where pid = #{id}
+    </select>
+
+    <!--通过栏目名查询其父栏目信息-->
+    <select id="selectlabelInfo" resultMap="selectOther">
+        select * from newlabel where label_name = #{label_name}
+    </select>
+    <resultMap id="selectOther" type="Newlabel">
+        <id column="id" property="id"/>
+        <result column="label_name" property="label_name"/>
+        <result column="label_content" property="label_content"/>
+        <result column="pid" property="pid"/>
+        <association property="parent"
+                     javaType="Newlabel"
+                     select="selectNewsLabelByParent"
+                     column="pid"/>
+    </resultMap>
+    <select id="selectNewsLabelByParent" resultMap="selectOther">
+         select * from newlabel where id = #{pid}
+    </select>
+
+
+
+    <!--通过id查询栏目信息-->
+    <select id="selectLableById" resultMap="selectById">
+        select * from newlabel where id = #{id}
+    </select>
+    <resultMap id="selectById" type="Newlabel">
+        <id column="id" property="id"/>
+        <result column="label_name" property="label_name"/>
+        <result column="label_content" property="label_content"/>
+        <result column="pid" property="pid"/>
+        <association property="parent"
+                     javaType="Newlabel"
+                     select="selectNewsLabelById"
+                     column="pid"/>
+    </resultMap>
+    <select id="selectNewsLabelById" resultMap="selectById">
+        select * from newlabel where id = #{pid}
+    </select>
+
+
+    <!--通过栏目名查询其id-->
+    <select id="selectfindParentId" resultType="int">
+        select id from newlabel where label_name = #{label_name}
+    </select>
+
+    <!--查询全部栏目名称-->
+    <select id="selectlabels" resultType="java.lang.String">
+        select label_name from newlabel
+    </select>
+
+    <!--插入栏目-->
+    <insert id="insertNewLabel" parameterType="newlabel">
+        insert into newlabel(label_name,label_content,pid) values(#{label_name},#{label_content},#{pid})
+    </insert>
+
+    <!--更新栏目-->
+    <update id="updateNewLabel">
+        update newlabel set label_name=#{label_name},label_content=#{label_content},pid=#{pid} where id = #{id}
+    </update>
+
+
+    <!--删除栏目-->
+    <delete id="deleteNewLabel" >
+        delete from newlabel where id = #{id}
+    </delete>
+
+</mapper>

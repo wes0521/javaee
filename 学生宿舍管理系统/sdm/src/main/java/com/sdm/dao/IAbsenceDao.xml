@@ -1,0 +1,41 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.sdm.dao.IAbsenceDao">
+
+    <!--查询全部的缺勤信息-->
+    <select id="selectAllAbsence" resultType="Absence">
+        select * from absence
+    </select>
+
+    <!--    按照学号查询缺勤信息-->
+    <select id="selectAbsenceBySno" resultType="Absence">
+        select * from absence where st_sno = #{sno}
+    </select>
+
+    <!--删除信息-->
+    <delete id="deleteAbsenceById" parameterType="java.lang.String">
+        delete from absence where ab_id = #{ab_id}
+    </delete>
+
+    <!--插入信息-->
+    <insert id="insertAbsence" parameterType="Absence">
+        insert into absence(st_sno,st_name,st_sex,st_class,house_num,ab_time,wr_person) values(#{st_sno},#{st_name},#{st_sex},#{st_class},#{house_num},#{ab_time},#{wr_person})
+    </insert>
+
+    <!--通过学号sno更新信息-->
+    <update id="updateAbsenceBySno" parameterType="Absence">
+        update absence set st_sno=#{st_sno},st_name=#{st_name},st_sex=#{st_sex},st_class=#{st_class},house_num=#{house_num},ab_time=#{ab_time},wr_person=#{wr_person} where ab_id = #{ab_id}
+    </update>
+
+    <!--查询全部学号放入list集合里-->
+    <select id="findAllSno" resultType="java.lang.String">
+        select st_sno from absence
+    </select>
+
+    <!--通过学号sno查询学生的信息-->
+    <select id="findAbsenceBySno" resultType="Absence">
+        select * from absence where ab_id = #{ab_id}
+    </select>
+</mapper>

@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.sdm.dao.IAdminDao">
+
+    <!--插入管理员信息-->
+    <insert id="insertAdmin" parameterType="User">
+        insert into user(username,password) values(#{username},#{password})
+    </insert>
+
+    <!--通过aid更新管理员信息-->
+    <update id="update" parameterType="User">
+        update user set password=#{password} where username = #{username}
+    </update>
+
+    <!--通过aid查询管理员信息-->
+    <select id="findAdminById" resultType="User">
+        select * from user where user_id = #{id}
+    </select>
+</mapper>

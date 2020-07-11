@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.sdm.dao.ILoginDao">
+    <!-- 管理员查询用户和密码进行登录 -->
+    <select id="findByUsername" resultType="User" parameterType="String">
+        select * from user where username = #{username}
+    </select>
+<!--    &lt;!&ndash; 学生查询用户和密码进行登录 &ndash;&gt;-->
+<!--    <select id="selectBySno" resultType="Student" parameterType="String">-->
+<!--        select * from student where st_sno = #{sno}-->
+<!--    </select>-->
+
+</mapper>

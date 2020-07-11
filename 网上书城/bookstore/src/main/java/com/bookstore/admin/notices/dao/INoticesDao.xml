@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.bookstore.admin.notices.dao.INoticesDao">
+
+    <!--查询全部公告-->
+    <select id="selectNotices" resultType="Notice">
+      select * from notice
+    </select>
+
+    <!--删除公告-->
+    <delete id="deleteNotices">
+        delete from notice where n_id = #{id}
+    </delete>
+
+    <!--添加公告-->
+    <insert id="insertNotice">
+        insert into notice (title,details) values(#{title},#{details})
+    </insert>
+
+    <!--查询公告详细信息-->
+    <select id="selectNoticeById" resultType="Notice">
+        select * from notice where n_id = #{id}
+    </select>
+
+    <!--修改公告-->
+    <update id="updateNotice">
+        update notice set title = #{title},details=#{details} where n_id = #{n_id}
+    </update>
+
+</mapper>
